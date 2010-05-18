@@ -1,4 +1,6 @@
 var cookie_jar = [];
+var sys = require("sys");
+
 
 with(require("./lib/fab"))
 
@@ -20,7 +22,7 @@ with(require("./lib/fab"))
     ( function () {
       var out = this;
       return function () {
-        cookie_jar.clear();
+        cookie_jar.length = 0;
         out({body: "MOAR COOKIES"})();
       }
     })
